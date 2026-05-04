@@ -1,7 +1,7 @@
 const typeDefs = `#graphql
   type Admin {
     id: ID!
-    username: String!
+    email: String!
     role: String!
   }
 
@@ -22,6 +22,8 @@ const typeDefs = `#graphql
     id: ID!
     name: String!
     description: String
+    goal_amount: Float
+    total_donated: Float
     donations: [Donation]
   }
 
@@ -29,6 +31,7 @@ const typeDefs = `#graphql
     id: ID!
     amount: Float!
     date: String!
+    payment_method: String
     donor: Donor
     charity: Charity
   }
@@ -36,18 +39,19 @@ const typeDefs = `#graphql
   type Query {
     getDonors: [Donor]
     getDonorById(id: ID!): Donor
-    getCharities: [Charity]
+    charities: [Charity]
     getCharityById(id: ID!): Charity
     getDonations: [Donation]
     getDonationById(id: ID!): Donation
+    donationsByDonor(donorId: ID!): [Donation]
   }
 
   type Mutation {
-    login(username: String!, password: String!): AuthPayload!
+    login(email: String!, password: String!): AuthPayload!
     addDonor(name: String!, email: String!, phone: String): Donor
-    addCharity(name: String!, description: String): Charity
-    makeDonation(amount: Float!, donorId: ID!, charityId: ID!): Donation
+    addCharity(name: String!, description: String, goal_amount: Float): Charity
+    addDonation(amount: Float!, donorId: ID!, charityId: ID!, payment_method: String): Donation
   }
 `;
 
-module.exports = typeDefs;
+export default typeDefs;

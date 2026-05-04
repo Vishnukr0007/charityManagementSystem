@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
 
 const Donation = sequelize.define('Donation', {
   id: {
@@ -15,8 +15,11 @@ const Donation = sequelize.define('Donation', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  payment_method: {
+    type: DataTypes.STRING,
+  },
 }, {
   timestamps: true,
 });
 
-module.exports = Donation;
+export default Donation;

@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
 
 const Charity = sequelize.define('Charity', {
   id: {
@@ -14,8 +14,11 @@ const Charity = sequelize.define('Charity', {
   description: {
     type: DataTypes.TEXT,
   },
+  goal_amount: {
+    type: DataTypes.FLOAT,
+  },
 }, {
   timestamps: true,
 });
 
-module.exports = Charity;
+export default Charity;

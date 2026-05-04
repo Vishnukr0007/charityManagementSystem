@@ -1,7 +1,7 @@
-const authResolver = require('./authResolver');
-const donorResolver = require('./donorResolver');
-const charityResolver = require('./charityResolver');
-const donationResolver = require('./donationResolver');
+import authResolver from './authResolver.js';
+import donorResolver from './donorResolver.js';
+import charityResolver from './charityResolver.js';
+import donationResolver from './donationResolver.js';
 
 const resolvers = {
   Query: {
@@ -15,6 +15,12 @@ const resolvers = {
     ...charityResolver.Mutation,
     ...donationResolver.Mutation,
   },
+  Charity: {
+    ...charityResolver.Charity,
+  },
+  Donation: {
+    ...donationResolver.Donation,
+  }
 };
 
-module.exports = resolvers;
+export default resolvers;

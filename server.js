@@ -1,17 +1,20 @@
-const express = require('express');
-const { ApolloServer } = require('@apollo/server');
-const { expressMiddleware } = require('@as-integrations/express5');
-const cors = require('cors');
-const { sequelize } = require('./models');
-const typeDefs = require('./schema/schema');
-const resolvers = require('./resolvers');
-const authMiddleware = require('./middleware/authMiddleware');
-require('dotenv').config();
+import express from 'express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@as-integrations/express5';
+import cors from 'cors';
+import { sequelize } from './models/index.js';
+import typeDefs from './schema/schema.js';
+import resolvers from './resolvers/index.js';
+import authMiddleware from './middleware/authMiddleware.js';
+import { createInitialAdmin } from './services/authService.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Initializes and starts the Express & Apollo GraphQL server
 const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
@@ -24,7 +27,8 @@ const startServer = async () => {
     '/graphql',
     expressMiddleware(server, {
       context: async ({ req }) => {
-        return authMiddleware({ req });
+        const { user } = await authMiddleware({ req });
+        return { user, req };
       },
     })
   );
@@ -33,12 +37,11 @@ const startServer = async () => {
 
   try {
     // Sync models
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ alter: true });
     console.log('Database synced');
     
     // Optional: create a default admin if none exists
-    const { createInitialAdmin } = require('./services/authService');
-    await createInitialAdmin('admin', 'admin123');
+    await createInitialAdmin('Admin User', 'admin@example.com', 'admin123');
 
     app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}/graphql`);

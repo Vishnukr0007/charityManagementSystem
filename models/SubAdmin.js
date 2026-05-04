@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 
-const Admin = sequelize.define('Admin', {
+const SubAdmin = sequelize.define('SubAdmin', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -15,4 +15,4 @@ const Admin = sequelize.define('Admin', {
   timestamps: true,
 });
 
-export default Admin;
+export default SubAdmin;
